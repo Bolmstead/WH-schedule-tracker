@@ -1,0 +1,30 @@
+{
+  "name": "whitehouse-twitter-tracker",
+  "version": "1.0.0",
+  "description": "Tracks Trump's White House schedule from factba.se API",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "agent-twitter-client": "^0.0.18",
+    "axios": "^1.6.0",
+    "dotenv": "^17.2.1",
+    "fs": "0.0.1-security",
+    "path": "^0.12.7",
+    "url": "^0.11.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  },
+  "keywords": [
+    "trump",
+    "whitehouse",
+    "schedule",
+    "api"
+  ],
+  "author": "",
+  "license": "ISC"
+}
