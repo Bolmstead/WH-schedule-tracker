@@ -151,6 +151,8 @@ function formatScheduleForTwitter(todayEvents, upcomingEvents) {
 
   if (allEvents.length === 0) return "";
 
+  const header = "🚨 TRUMPS SCHEDULE UPDATED 🚨";
+
   // Sort events by date and time
   allEvents.sort((a, b) => {
     const dateCompare = a.date.localeCompare(b.date);
@@ -218,7 +220,7 @@ function formatScheduleForTwitter(todayEvents, upcomingEvents) {
       return finalString;
     });
 
-    return `${dateHeader}\n\n${eventStrings.join("\n\n")}`;
+    return `${header}\n\n${dateHeader}\n\n${eventStrings.join("\n\n")}`;
   });
 
   tweetText = dateStrings.join("\n\n━━━━━━━━━━━━━━━━━━━━\n\n");
