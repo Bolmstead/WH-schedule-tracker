@@ -310,7 +310,7 @@ function startPeriodicFetch() {
   fetchCalendarData();
 
   // Set up interval to fetch every 30 seconds (30000 milliseconds)
-  setInterval(fetchCalendarData, 10000);
+  setInterval(fetchCalendarData, 15000);
 }
 
 // Handle graceful shutdown
