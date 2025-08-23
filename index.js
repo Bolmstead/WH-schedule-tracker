@@ -1,8 +1,12 @@
 import axios from "axios";
 import { sendTweet } from "./twitterAgentClient.js";
+import http from "http";
 
 // API endpoint
 const API_URL = "https://media-cdn.factba.se/rss/json/trump/calendar-full.json";
+
+// Heroku requires a web server to keep the dyno alive
+const PORT = process.env.PORT || 3000;
 
 // Variables to store parsed data
 let scheduleData = [];
@@ -322,6 +326,20 @@ process.on("SIGINT", () => {
 process.on("SIGTERM", () => {
   console.log("\nShutting down calendar tracker...");
   process.exit(0);
+});
+
+// Create a simple HTTP server to keep Heroku dyno alive
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end(
+    `White House Calendar Tracker is running!\nTracking ${
+      scheduleData.length
+    } total events.\nLast updated: ${new Date().toISOString()}`
+  );
+});
+
+server.listen(PORT, () => {
+  console.log(`HTTP server running on port ${PORT}`);
 });
 
 // Start the application
