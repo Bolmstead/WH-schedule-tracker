@@ -70,6 +70,8 @@ async function fetchCalendarData() {
         console.log("📱 Sending schedule tweet:", tweetText);
         await sendTweet(tweetText);
       }
+    } else {
+      console.log(`[${new Date().toISOString()}] No new events detected`);
     }
 
     // Update previous state with only the latest 14 days of data
@@ -91,57 +93,57 @@ async function fetchCalendarData() {
   }
 }
 
-/**
- * Formats new events into a Twitter-friendly string
- */
-function formatEventsForTwitter(events) {
-  if (events.length === 0) return "";
+// /**
+//  * Formats new events into a Twitter-friendly string
+//  */
+// function formatEventsForTwitter(events) {
+//   if (events.length === 0) return "";
 
-  const header =
-    events.length === 1
-      ? "🚨 NEW WHITE HOUSE EVENT:"
-      : `🚨 ${events.length} NEW WHITE HOUSE EVENTS:`;
+//   const header =
+//     events.length === 1
+//       ? "🚨 NEW WHITE HOUSE EVENT:"
+//       : `🚨 ${events.length} NEW WHITE HOUSE EVENTS:`;
 
-  const eventStrings = events.map((event, index) => {
-    const eventNum = events.length > 1 ? `${index + 1}. ` : "";
-    const date = new Date(event.date).toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-    });
-    const time = event.time_formatted || "Time TBA";
-    const location =
-      event.location === "The White House"
-        ? "🏛️ White House"
-        : `📍 ${event.location}`;
+//   const eventStrings = events.map((event, index) => {
+//     const eventNum = events.length > 1 ? `${index + 1}. ` : "";
+//     const date = new Date(event.date).toLocaleDateString("en-US", {
+//       weekday: "short",
+//       month: "short",
+//       day: "numeric",
+//     });
+//     const time = event.time_formatted || "Time TBA";
+//     const location =
+//       event.location === "The White House"
+//         ? "🏛️ White House"
+//         : `📍 ${event.location}`;
 
-    // Truncate details if too long for Twitter
-    let details = event.details;
-    const maxDetailsLength =
-      100 - eventNum.length - date.length - time.length - location.length - 10; // buffer for formatting
-    if (details.length > maxDetailsLength) {
-      details = details.substring(0, maxDetailsLength - 3) + "...";
-    }
+//     // Truncate details if too long for Twitter
+//     let details = event.details;
+//     const maxDetailsLength =
+//       100 - eventNum.length - date.length - time.length - location.length - 10; // buffer for formatting
+//     if (details.length > maxDetailsLength) {
+//       details = details.substring(0, maxDetailsLength - 3) + "...";
+//     }
 
-    return `${eventNum}📅 ${date} ${time}\n${location}\n${details}`;
-  });
+//     return `${eventNum}📅 ${date} ${time}\n${location}\n${details}`;
+//   });
 
-  let tweetText = `${header}\n\n${eventStrings.join("\n\n")}`;
+//   let tweetText = `${header}\n\n${eventStrings.join("\n\n")}`;
 
-  // Add hashtags if there's room
-  const hashtags = "\n\n#WhiteHouse #Trump #Schedule";
-  if (tweetText.length + hashtags.length <= 280) {
-    tweetText += hashtags;
-  }
+//   // Add hashtags if there's room
+//   const hashtags = "\n\n#WhiteHouse #Trump #Schedule";
+//   if (tweetText.length + hashtags.length <= 280) {
+//     tweetText += hashtags;
+//   }
 
-  // Ensure we don't exceed Twitter's character limit
-  if (tweetText.length > 280) {
-    // If too long, truncate and add ellipsis
-    tweetText = tweetText.substring(0, 277) + "...";
-  }
+//   // Ensure we don't exceed Twitter's character limit
+//   if (tweetText.length > 280) {
+//     // If too long, truncate and add ellipsis
+//     tweetText = tweetText.substring(0, 277) + "...";
+//   }
 
-  return tweetText;
-}
+//   return tweetText;
+// }
 
 /**
  * Formats today's and upcoming events into a Twitter-friendly schedule string
@@ -197,7 +199,7 @@ function formatScheduleForTwitter(todayEvents, upcomingEvents) {
       let time = event.time_formatted ? `${event.time_formatted}` : "";
       time = time.toUpperCase();
       console.log("🚀 ~ formatScheduleForTwitter ~ time:", time);
-      const location = `📍 ${event.location}`;
+      const location = event.location ? `📍 ${event.location}` : "";
 
       // Handle different event types
       let details = event.details;
@@ -319,30 +321,30 @@ function startPeriodicFetch() {
   setInterval(fetchCalendarData, 15000);
 }
 
-// Handle graceful shutdown
-process.on("SIGINT", () => {
-  console.log("\nShutting down calendar tracker...");
-  process.exit(0);
-});
+// // Handle graceful shutdown
+// process.on("SIGINT", () => {
+//   console.log("\nShutting down calendar tracker...");
+//   process.exit(0);
+// });
 
-process.on("SIGTERM", () => {
-  console.log("\nShutting down calendar tracker...");
-  process.exit(0);
-});
+// process.on("SIGTERM", () => {
+//   console.log("\nShutting down calendar tracker...");
+//   process.exit(0);
+// });
 
-// Create a simple HTTP server to keep Heroku dyno alive
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end(
-    `White House Calendar Tracker is running!\nTracking ${
-      scheduleData.length
-    } total events.\nLast updated: ${new Date().toISOString()}`
-  );
-});
+// // Create a simple HTTP server to keep Heroku dyno alive
+// const server = http.createServer((req, res) => {
+//   res.writeHead(200, { "Content-Type": "text/plain" });
+//   res.end(
+//     `White House Calendar Tracker is running!\nTracking ${
+//       scheduleData.length
+//     } total events.\nLast updated: ${new Date().toISOString()}`
+//   );
+// });
 
-server.listen(PORT, () => {
-  console.log(`HTTP server running on port ${PORT}`);
-});
+// server.listen(PORT, () => {
+//   console.log(`HTTP server running on port ${PORT}`);
+// });
 
 // Start the application
 startPeriodicFetch();
@@ -354,7 +356,6 @@ export {
   detectNewEvents,
   createEventId,
   filterToLatest14Days,
-  formatEventsForTwitter,
   formatScheduleForTwitter,
   scheduleData,
   latestEvents,
