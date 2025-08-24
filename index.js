@@ -209,11 +209,17 @@ function formatScheduleForTwitter(todayEvents, upcomingEvents) {
         details = `${details}`;
       }
 
+      if (event.coverage) {
+        event.coverage = `👥 ${event.coverage}`;
+      } else {
+        event.coverage = "";
+      }
+
       // Truncate if too long
       if (details.length > 60) {
         details = details.substring(0, 57) + "...";
       }
-      let finalString = `${time}:   ${details}\n${location} 👥 ${event.coverage}`;
+      let finalString = `${time}:   ${details}\n${location} ${event.coverage}`;
 
       if (details.includes("The President has no public events scheduled")) {
         finalString = "❌ The President has no public events scheduled";
