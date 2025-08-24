@@ -39,6 +39,8 @@ async function fetchCalendarData() {
         } events from the latest 14 days (${data.length} total events in API)`
       );
       isFirstFetch = false;
+      parseCalendarData(data);
+
       const tweetText = formatScheduleForTwitter(
         todayEvents,
         upcomingEvents,
