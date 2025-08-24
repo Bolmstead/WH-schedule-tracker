@@ -39,6 +39,15 @@ async function fetchCalendarData() {
         } events from the latest 14 days (${data.length} total events in API)`
       );
       isFirstFetch = false;
+      const tweetText = formatScheduleForTwitter(
+        todayEvents,
+        upcomingEvents,
+        "🇺🇸 TRUMPS SCHEDULE 🇺🇸"
+      );
+      if (tweetText) {
+        console.log("📱 Sending schedule tweet:", tweetText);
+        await sendTweet(tweetText);
+      }
     } else if (newEvents.length > 0) {
       console.log(`[${new Date().toISOString()}] NEW EVENTS DETECTED!`);
       console.log(`Found ${newEvents.length} new event(s):\n`);
@@ -148,12 +157,14 @@ async function fetchCalendarData() {
 /**
  * Formats today's and upcoming events into a Twitter-friendly schedule string
  */
-function formatScheduleForTwitter(todayEvents, upcomingEvents) {
+function formatScheduleForTwitter(
+  todayEvents,
+  upcomingEvents,
+  header = "🚨 TRUMPS SCHEDULE UPDATED 🚨"
+) {
   const allEvents = [...todayEvents, ...upcomingEvents];
 
   if (allEvents.length === 0) return "";
-
-  const header = "🚨 TRUMPS SCHEDULE UPDATED 🚨";
 
   // Sort events by date and time
   allEvents.sort((a, b) => {
