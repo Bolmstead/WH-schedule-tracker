@@ -8,6 +8,7 @@
     "node": "18.x",
     "npm": "9.x"
   },
+  "packageManager": "npm@9.9.3",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",

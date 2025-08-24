@@ -1,0 +1,10 @@
+{
+  "skip_pruning": true,
+  "node_modules_cache": false,
+  "npm_install_flags": [
+    "--only=production",
+    "--no-optional",
+    "--no-audit",
+    "--no-fund"
+  ]
+}
