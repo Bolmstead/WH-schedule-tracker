@@ -4,17 +4,20 @@
   "description": "Tracks Trump's White House schedule from factba.se API",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  },
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "build": "echo 'No build step required'",
+    "heroku-postbuild": "echo 'Post-build complete'"
   },
   "dependencies": {
     "agent-twitter-client": "^0.0.18",
     "axios": "^1.6.0",
-    "dotenv": "^17.2.1",
-    "fs": "0.0.1-security",
-    "path": "^0.12.7",
-    "url": "^0.11.4"
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
     "nodemon": "^3.0.0"

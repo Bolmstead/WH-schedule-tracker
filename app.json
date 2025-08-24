@@ -1,0 +1,32 @@
+{
+  "name": "whitehouse-twitter-tracker",
+  "description": "Tracks Trump's White House schedule and tweets updates",
+  "repository": "https://github.com/your-username/whitehouse-twitter",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["node", "twitter", "schedule", "whitehouse"],
+  "image": "heroku/nodejs",
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "env": {
+    "NODE_ENV": {
+      "description": "Node environment",
+      "value": "production"
+    },
+    "TWITTER_USE_COOKIE_AUTH": {
+      "description": "Use cookie authentication for Twitter",
+      "value": "true"
+    },
+    "TWITTER_COOKIES_AUTH_TOKEN": {
+      "description": "Twitter auth token cookie"
+    },
+    "TWITTER_COOKIES_CT0": {
+      "description": "Twitter ct0 cookie"
+    },
+    "TWITTER_COOKIES_GUEST_ID": {
+      "description": "Twitter guest ID cookie"
+    }
+  }
+}
